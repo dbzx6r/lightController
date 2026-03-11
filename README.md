@@ -105,6 +105,28 @@ GND             ──┘   other side  (INPUT_PULLUP)
 
 ## 🚀 Setup
 
+### 0. Create your `config.h` first
+
+> ⚠️ **`config.h` is gitignored** (it holds your secrets). You must create it before the sketch will compile.
+
+**ESP32:**
+```bash
+cp esp32/config.h.example esp32/config.h
+```
+**ESP8266:**
+```bash
+cp config.h.example config.h
+```
+
+Then open the file and fill in your details:
+
+```cpp
+#define WIFI_SSID        "YourNetworkName"
+#define WIFI_PASSWORD    "YourPassword"
+#define HA_BASE_URL      "http://192.168.1.100:8123"   // your HA IP
+#define HA_TOKEN         "ey..."                        // HA long-lived token
+```
+
 ### 1. Prerequisites
 
 - [Arduino IDE](https://www.arduino.cc/en/software) 1.8+ or 2.x
@@ -146,14 +168,8 @@ cp config.h.example config.h
 cp esp32/config.h.example esp32/config.h
 ```
 
-Edit `config.h` (same fields for both):
+Fill in the same fields shown in Step 0 above.
 
-```cpp
-#define WIFI_SSID        "YourNetworkName"
-#define WIFI_PASSWORD    "YourPassword"
-#define HA_BASE_URL      "http://192.168.1.100:8123"   // your HA IP
-#define HA_TOKEN         "ey..."                        // HA long-lived token
-```
 
 ### 5. Select board & upload
 
