@@ -11,8 +11,12 @@ struct LightEntity {
     int  brightness; // 0-100 percent
 };
 
-// Fetch all light entities from HA. Returns count (0 on failure).
+// Returns count of lights found, or negative on error:
+//  -1  = could not begin HTTP connection
+//  -2  = HTTP error (check ha_lastHttpCode for the code)
+//  -3  = JSON parse error
 int  ha_fetchLights(LightEntity lights[], int maxCount);
+extern int ha_lastHttpCode; // set on every GET/POST attempt
 
 // Fetch a single entity's current state. Returns false on failure.
 bool ha_fetchLight(LightEntity &light);

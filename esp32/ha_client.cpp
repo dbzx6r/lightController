@@ -1,8 +1,10 @@
 #include "ha_client.h"
 #include "config.h"
-#include <HTTPClient.h>      // ESP32 HTTPClient
+#include <HTTPClient.h>
 #include <WiFiClient.h>
 #include <ArduinoJson.h>
+
+int ha_lastHttpCode = 0;
 
 // ── Helpers ──────────────────────────────────
 static void addAuthHeaders(HTTPClient &http) {
@@ -19,16 +21,28 @@ int ha_fetchLights(LightEntity lights[], int maxCount) {
     HTTPClient http;
     String url = String(HA_BASE_URL) + "/api/states";
 
-    if (!http.begin(wifiClient, url)) return 0;
+    Serial.println("[HA] GET " + url);
+    if (!http.begin(wifiClient, url)) {
+        Serial.println("[HA] http.begin() failed");
+        ha_lastHttpCode = 0;
+        return -1;
+    }
     addAuthHeaders(http);
 
-    int code = http.GET();
-    if (code != 200) { http.end(); return 0; }
+    ha_lastHttpCode = http.GET();
+    Serial.printf("[HA] HTTP %d\n", ha_lastHttpCode);
+    if (ha_lastHttpCode != 200) {
+        http.end();
+        return -2;
+    }
 
     DynamicJsonDocument doc(32768);
     DeserializationError err = deserializeJson(doc, http.getStream());
     http.end();
-    if (err) return 0;
+    if (err) {
+        Serial.printf("[HA] JSON error: %s\n", err.c_str());
+        return -3;
+    }
 
     int count = 0;
     const char* prefix = HA_ENTITY_PREFIX;
@@ -36,7 +50,6 @@ int ha_fetchLights(LightEntity lights[], int maxCount) {
 
     for (JsonObject obj : doc.as<JsonArray>()) {
         if (count >= maxCount) break;
-
         const char* id = obj["entity_id"] | "";
         if (strncmp(id, prefix, prefixLen) != 0) continue;
 
@@ -56,6 +69,7 @@ int ha_fetchLights(LightEntity lights[], int maxCount) {
 
         count++;
     }
+    Serial.printf("[HA] Found %d light entities\n", count);
     return count;
 }
 

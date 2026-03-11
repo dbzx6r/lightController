@@ -47,6 +47,15 @@ static void refreshLights() {
         lightCount   = n;
         selectedIdx  = 0;
         scrollOffset = 0;
+    } else {
+        // Keep old list if we had one; show error on screen
+        char msg[64];
+        if (n == -1)      snprintf(msg, sizeof(msg), "HA: connection failed");
+        else if (n == -2) snprintf(msg, sizeof(msg), "HA: HTTP %d", ha_lastHttpCode);
+        else if (n == -3) snprintf(msg, sizeof(msg), "HA: bad JSON");
+        else              snprintf(msg, sizeof(msg), "No light.* entities found");
+        display_splash(tft, msg);
+        delay(3000);
     }
 }
 

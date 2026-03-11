@@ -87,6 +87,22 @@ void display_roomList(TFT_eSPI &tft, LightEntity lights[], int count,
                       int selectedIdx, int scrollOffset) {
     int y0 = STATUS_H;
 
+    if (count == 0) {
+        tft.fillRect(0, y0, SCREEN_W, SCREEN_H - y0, C_BG);
+        tft.setTextColor(C_GREY, C_BG);
+        tft.setTextSize(1);
+        tft.setCursor(20, y0 + 70);
+        tft.print("No lights found.");
+        tft.setCursor(20, y0 + 86);
+        tft.print("Check HA_BASE_URL and");
+        tft.setCursor(20, y0 + 98);
+        tft.print("HA_TOKEN in config.h");
+        tft.setCursor(20, y0 + 118);
+        tft.setTextColor(C_ACCENT, C_BG);
+        tft.print("Press KEY0 to retry");
+        return;
+    }
+
     for (int i = 0; i < VISIBLE_ROWS; i++) {
         int idx = scrollOffset + i;
         int y = y0 + i * ROW_H;
@@ -95,7 +111,6 @@ void display_roomList(TFT_eSPI &tft, LightEntity lights[], int count,
             tft.fillRect(0, y, SCREEN_W, ROW_H, C_BG);
             continue;
         }
-
         bool selected = (idx == selectedIdx);
         uint16_t bgCol = selected ? C_ACCENT : C_BG;
         uint16_t fgCol = selected ? C_BG     : C_WHITE;
