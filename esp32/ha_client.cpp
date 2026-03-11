@@ -36,8 +36,18 @@ int ha_fetchLights(LightEntity lights[], int maxCount) {
         return -2;
     }
 
-    DynamicJsonDocument doc(32768);
-    DeserializationError err = deserializeJson(doc, http.getStream());
+    // Filter: only deserialize the three fields we actually need.
+    // This keeps memory use tiny regardless of how many entities HA has.
+    StaticJsonDocument<128> filter;
+    filter[0]["entity_id"] = true;
+    filter[0]["state"] = true;
+    filter[0]["attributes"]["friendly_name"] = true;
+    filter[0]["attributes"]["brightness"] = true;
+
+    // With filtering, 16KB is more than enough for MAX_LIGHTS entities.
+    DynamicJsonDocument doc(16384);
+    DeserializationError err = deserializeJson(doc, http.getStream(),
+                                               DeserializationOption::Filter(filter));
     http.end();
     if (err) {
         Serial.printf("[HA] JSON error: %s\n", err.c_str());
