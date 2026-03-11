@@ -27,6 +27,10 @@
 #define TFT_RST_PIN  4   // GPIO4
 // MOSI → GPIO23 (VSPI MOSI), SCLK → GPIO18 (VSPI SCLK)
 
+// Backlight: wire display BLK pin to GPIO27.
+// Alternatively, wire BLK directly to 3.3V for always-on (then comment this out).
+#define TFT_BL_PIN   27  // GPIO27 → BLK
+
 // ─────────────────────────────────────────────
 //  EC11 Rotary Encoder
 // ─────────────────────────────────────────────

@@ -19,6 +19,12 @@
 #define TFT_MOSI 23  // GPIO23  (VSPI MOSI)
 #define TFT_SCLK 18  // GPIO18  (VSPI SCLK)
 
+// Backlight (BLK pin on display)
+// TFT_eSPI will drive this HIGH automatically on init.
+// Alternatively, wire BLK directly to 3.3V and remove these two lines.
+#define TFT_BL          27  // GPIO27 → BLK
+#define TFT_BACKLIGHT_ON HIGH
+
 // SPI bus frequency
 #define SPI_FREQUENCY  40000000
 

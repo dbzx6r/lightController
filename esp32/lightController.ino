@@ -74,6 +74,12 @@ static void connectWiFi() {
 void setup() {
     Serial.begin(115200);
 
+    // Drive backlight HIGH before init so screen lights up immediately.
+    // TFT_eSPI also sets TFT_BL via User_Setup.h, but being explicit here
+    // ensures it works regardless of TFT_eSPI version.
+    pinMode(TFT_BL_PIN, OUTPUT);
+    digitalWrite(TFT_BL_PIN, HIGH);
+
     tft.init();
     tft.setRotation(0);
     tft.fillScreen(0x1082);
