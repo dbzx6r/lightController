@@ -1,5 +1,6 @@
 # Secrets — never commit the real config.h
 config.h
+esp32/config.h
 
 # Arduino build artifacts
 *.bin

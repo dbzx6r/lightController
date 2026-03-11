@@ -35,38 +35,68 @@
 
 | Part | Notes |
 |------|-------|
-| **ESP8266** (Wemos D1 Mini or NodeMCU) | Any ESP8266 board works |
+| **ESP8266** (Wemos D1 Mini or NodeMCU) *or* **ESP32** | See `esp32/` folder for ESP32 version |
 | **1.54" ST7789 240×240 SPI display** | [Common AliExpress board](https://aliexpress.com) |
 | **EC11 rotary encoder** | With built-in push button |
 | **Momentary push button** (KEY0) | Any tactile switch |
 | Breadboard + jumper wires | |
 
+> **Using an ESP32?** → Use the code in the [`esp32/`](esp32/) subfolder. All logic is identical; only the WiFi library, ISR attribute, and default pins differ.
+
 ---
 
 ## 🔌 Wiring
 
+### ESP8266 (Wemos D1 Mini / NodeMCU)
+
 ```
-ESP8266 (D1 Mini)          ST7789 Display
-──────────────────         ──────────────
-D7 / GPIO13  (MOSI)  ──►  SDA / MOSI
-D5 / GPIO14  (SCLK)  ──►  SCL / SCLK
-D2 / GPIO4   (CS)    ──►  CS
-D1 / GPIO5   (DC)    ──►  DC / A0
-D0 / GPIO16  (RST)   ──►  RES / RST
-3.3V                 ──►  VCC
-GND                  ──►  GND
+ESP8266 GPIO           ST7789 Display
+──────────────         ──────────────
+GPIO13  (MOSI)  ──►   SDA / MOSI
+GPIO14  (SCLK)  ──►   SCL / SCLK
+GPIO4   (CS)    ──►   CS
+GPIO5   (DC)    ──►   DC / A0
+GPIO16  (RST)   ──►   RES / RST
+3.3V            ──►   VCC
+GND             ──►   GND
 
-ESP8266                    EC11 Encoder
-──────────────────         ────────────
-D6 / GPIO12          ──►  CLK  (A)
-D3 / GPIO0           ──►  DT   (B)
-D4 / GPIO2           ──►  SW   (push button)
-GND                  ──►  GND
+ESP8266 GPIO           EC11 Encoder
+──────────────         ────────────
+GPIO12          ──►   CLK  (A)
+GPIO0           ──►   DT   (B)
+GPIO2           ──►   SW   (push button)
+GND             ──►   GND
 
-ESP8266                    KEY0 Button
-──────────────────         ───────────
-D8 / GPIO15          ──┐  one side
-GND                  ──┘  other side  (uses INPUT_PULLUP)
+ESP8266 GPIO           KEY0 Button
+──────────────         ───────────
+GPIO15          ──┐   one side
+GND             ──┘   other side  (INPUT_PULLUP)
+```
+
+### ESP32 (DevKit V1 / generic)
+
+```
+ESP32 GPIO             ST7789 Display
+──────────────         ──────────────
+GPIO23  (MOSI)  ──►   SDA / MOSI
+GPIO18  (SCLK)  ──►   SCL / SCLK
+GPIO5   (CS)    ──►   CS
+GPIO2   (DC)    ──►   DC / A0
+GPIO4   (RST)   ──►   RES / RST
+3.3V            ──►   VCC
+GND             ──►   GND
+
+ESP32 GPIO             EC11 Encoder
+──────────────         ────────────
+GPIO32          ──►   CLK  (A)
+GPIO33          ──►   DT   (B)
+GPIO25          ──►   SW   (push button)
+GND             ──►   GND
+
+ESP32 GPIO             KEY0 Button
+──────────────         ───────────
+GPIO26          ──┐   one side
+GND             ──┘   other side  (INPUT_PULLUP)
 ```
 
 > All GPIO pins are configurable in `config.h`.
@@ -78,6 +108,8 @@ GND                  ──┘  other side  (uses INPUT_PULLUP)
 ### 1. Prerequisites
 
 - [Arduino IDE](https://www.arduino.cc/en/software) 1.8+ or 2.x
+- **ESP8266**: install [ESP8266 Arduino core](https://github.com/esp8266/Arduino)  
+  **ESP32**: install [ESP32 Arduino core](https://github.com/espressif/arduino-esp32)
 - [Home Assistant](https://www.home-assistant.io) with Philips Hue integration
 - A **Long-Lived Access Token** from HA  
   *(HA → Your Profile → Long-Lived Access Tokens → Create Token)*
@@ -93,7 +125,10 @@ Open **Sketch → Manage Libraries** and install:
 
 ### 3. Configure TFT_eSPI
 
-Copy `User_Setup.h` (in this repo) to your `TFT_eSPI` library folder, **replacing** the existing one:
+Copy the appropriate `User_Setup.h` to your `TFT_eSPI` library folder, **replacing** the existing one:
+
+- **ESP8266** → use `User_Setup.h` (root folder)
+- **ESP32** → use `esp32/User_Setup.h`
 
 ```
 <Documents>/Arduino/libraries/TFT_eSPI/User_Setup.h
@@ -101,11 +136,17 @@ Copy `User_Setup.h` (in this repo) to your `TFT_eSPI` library folder, **replacin
 
 ### 4. Configure the firmware
 
+**ESP8266:**
 ```bash
 cp config.h.example config.h
 ```
 
-Edit `config.h`:
+**ESP32:**
+```bash
+cp esp32/config.h.example esp32/config.h
+```
+
+Edit `config.h` (same fields for both):
 
 ```cpp
 #define WIFI_SSID        "YourNetworkName"
@@ -116,9 +157,15 @@ Edit `config.h`:
 
 ### 5. Select board & upload
 
+**ESP8266:**
 1. **Tools → Board** → `LOLIN(WEMOS) D1 R2 & mini` (or your board)
 2. **Tools → Upload Speed** → `921600`
 3. Open `lightController.ino`, click **Upload**
+
+**ESP32:**
+1. **Tools → Board** → `ESP32 Dev Module` (or your board)
+2. **Tools → Upload Speed** → `921600`
+3. Open `esp32/lightController.ino`, click **Upload**
 
 ---
 

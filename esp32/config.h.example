@@ -1,0 +1,48 @@
+#pragma once
+
+// ─────────────────────────────────────────────
+//  WiFi
+// ─────────────────────────────────────────────
+#define WIFI_SSID        "YOUR_SSID"
+#define WIFI_PASSWORD    "YOUR_PASSWORD"
+
+// ─────────────────────────────────────────────
+//  Home Assistant
+//  Long-lived access token: HA → Profile → Long-Lived Access Tokens
+// ─────────────────────────────────────────────
+#define HA_BASE_URL      "http://192.168.1.XXX:8123"
+#define HA_TOKEN         "YOUR_LONG_LIVED_ACCESS_TOKEN"
+
+// Only entities whose entity_id starts with this prefix are shown.
+// Use "light." to show all lights, or narrow it e.g. "light.hue"
+#define HA_ENTITY_PREFIX "light."
+
+// ─────────────────────────────────────────────
+//  Display – ST7789 240×240 via SPI (VSPI)
+//  Values are GPIO numbers.
+//  ESP32 VSPI defaults: MOSI=GPIO23, SCLK=GPIO18
+// ─────────────────────────────────────────────
+#define TFT_CS_PIN   5   // GPIO5
+#define TFT_DC_PIN   2   // GPIO2
+#define TFT_RST_PIN  4   // GPIO4
+// MOSI → GPIO23 (VSPI MOSI), SCLK → GPIO18 (VSPI SCLK)
+
+// ─────────────────────────────────────────────
+//  EC11 Rotary Encoder
+// ─────────────────────────────────────────────
+#define ENCODER_CLK_PIN  32  // GPIO32
+#define ENCODER_DT_PIN   33  // GPIO33
+#define ENCODER_SW_PIN   25  // GPIO25 (encoder push button)
+
+// ─────────────────────────────────────────────
+//  KEY0 – separate button
+// ─────────────────────────────────────────────
+#define KEY0_PIN         26  // GPIO26
+
+// ─────────────────────────────────────────────
+//  Behaviour tuning
+// ─────────────────────────────────────────────
+#define BRIGHTNESS_STEP       5    // percent per encoder tick
+#define BRIGHTNESS_DEBOUNCE   300  // ms to wait before sending brightness to HA
+#define HA_POLL_INTERVAL      5000 // ms between state refreshes in detail view
+#define MAX_LIGHTS            20   // max entities fetched from HA
