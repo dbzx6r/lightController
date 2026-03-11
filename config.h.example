@@ -1,0 +1,46 @@
+#pragma once
+
+// ─────────────────────────────────────────────
+//  WiFi
+// ─────────────────────────────────────────────
+#define WIFI_SSID        "YOUR_SSID"
+#define WIFI_PASSWORD    "YOUR_PASSWORD"
+
+// ─────────────────────────────────────────────
+//  Home Assistant
+//  Long-lived access token: HA → Profile → Long-Lived Access Tokens
+// ─────────────────────────────────────────────
+#define HA_BASE_URL      "http://192.168.1.XXX:8123"
+#define HA_TOKEN         "YOUR_LONG_LIVED_ACCESS_TOKEN"
+
+// Only entities whose entity_id starts with this prefix are shown.
+// Use "light." to show all lights, or narrow it e.g. "light.hue"
+#define HA_ENTITY_PREFIX "light."
+
+// ─────────────────────────────────────────────
+//  Display – ST7789 240×240 via SPI
+// ─────────────────────────────────────────────
+#define TFT_CS_PIN   4   // D2
+#define TFT_DC_PIN   5   // D1
+#define TFT_RST_PIN  16  // D0
+// MOSI → D7/GPIO13, SCLK → D5/GPIO14 (hardware SPI, no defines needed)
+
+// ─────────────────────────────────────────────
+//  EC11 Rotary Encoder
+// ─────────────────────────────────────────────
+#define ENCODER_CLK_PIN  12  // D6
+#define ENCODER_DT_PIN   0   // D3
+#define ENCODER_SW_PIN   2   // D4 (encoder push button)
+
+// ─────────────────────────────────────────────
+//  KEY0 – separate button
+// ─────────────────────────────────────────────
+#define KEY0_PIN         15  // D8
+
+// ─────────────────────────────────────────────
+//  Behaviour tuning
+// ─────────────────────────────────────────────
+#define BRIGHTNESS_STEP       5    // percent per encoder tick
+#define BRIGHTNESS_DEBOUNCE   300  // ms to wait before sending brightness to HA
+#define HA_POLL_INTERVAL      5000 // ms between state refreshes in detail view
+#define MAX_LIGHTS            20   // max entities fetched from HA

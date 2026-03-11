@@ -1,0 +1,11 @@
+# Secrets — never commit the real config.h
+config.h
+
+# Arduino build artifacts
+*.bin
+*.elf
+build/
+.arduino15/
+
+# macOS
+.DS_Store
