@@ -19,23 +19,28 @@
 
 // ─────────────────────────────────────────────
 //  Display – ST7789 240×240 via SPI
+//  Values are GPIO numbers (not "D" label numbers).
+//  Find the pin on your board labelled GPIO4, GPIO5, etc.
+//  Wemos D1 Mini: GPIO4=D2, GPIO5=D1, GPIO16=D0, GPIO13=D7, GPIO14=D5
 // ─────────────────────────────────────────────
-#define TFT_CS_PIN   4   // D2
-#define TFT_DC_PIN   5   // D1
-#define TFT_RST_PIN  16  // D0
-// MOSI → D7/GPIO13, SCLK → D5/GPIO14 (hardware SPI, no defines needed)
+#define TFT_CS_PIN   4   // GPIO4
+#define TFT_DC_PIN   5   // GPIO5
+#define TFT_RST_PIN  16  // GPIO16
+// MOSI → GPIO13 (hardware SPI), SCLK → GPIO14 (hardware SPI)
 
 // ─────────────────────────────────────────────
 //  EC11 Rotary Encoder
+//  Wemos D1 Mini: GPIO12=D6, GPIO0=D3, GPIO2=D4
 // ─────────────────────────────────────────────
-#define ENCODER_CLK_PIN  12  // D6
-#define ENCODER_DT_PIN   0   // D3
-#define ENCODER_SW_PIN   2   // D4 (encoder push button)
+#define ENCODER_CLK_PIN  12  // GPIO12
+#define ENCODER_DT_PIN   0   // GPIO0
+#define ENCODER_SW_PIN   2   // GPIO2 (encoder push button)
 
 // ─────────────────────────────────────────────
 //  KEY0 – separate button
+//  Wemos D1 Mini: GPIO15=D8
 // ─────────────────────────────────────────────
-#define KEY0_PIN         15  // D8
+#define KEY0_PIN         15  // GPIO15
 
 // ─────────────────────────────────────────────
 //  Behaviour tuning

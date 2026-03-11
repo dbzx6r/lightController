@@ -11,12 +11,14 @@
 #define TFT_WIDTH  240
 #define TFT_HEIGHT 240
 
-// Pins (must match config.h)
-#define TFT_CS   4   // D2 / GPIO4
-#define TFT_DC   5   // D1 / GPIO5
-#define TFT_RST  16  // D0 / GPIO16
-#define TFT_MOSI 13  // D7 / GPIO13  (hardware SPI MOSI)
-#define TFT_SCLK 14  // D5 / GPIO14  (hardware SPI SCLK)
+// Pins — values are GPIO numbers (not "D" label numbers).
+// Find the pin on your board labelled GPIO4, GPIO5, etc.
+// Wemos D1 Mini users: GPIO4=D2, GPIO5=D1, GPIO16=D0, GPIO13=D7, GPIO14=D5
+#define TFT_CS   4   // GPIO4
+#define TFT_DC   5   // GPIO5
+#define TFT_RST  16  // GPIO16
+#define TFT_MOSI 13  // GPIO13  (hardware SPI MOSI)
+#define TFT_SCLK 14  // GPIO14  (hardware SPI SCLK)
 
 // Use hardware SPI
 #define USE_HSPI_PORT
