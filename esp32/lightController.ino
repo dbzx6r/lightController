@@ -11,6 +11,11 @@
 #include "ha_client.h"
 #include "display.h"
 
+// Default backlight pin if not defined in config.h
+#ifndef TFT_BL_PIN
+  #define TFT_BL_PIN 27
+#endif
+
 // ── TFT ──────────────────────────────────────
 TFT_eSPI tft = TFT_eSPI();
 
